@@ -31,6 +31,10 @@
 # concurreny::
 #   Number of simulated concurrent clients.
 #
+# sleep::
+#   Seconds of time to wait until another thread is spawned. This allows you to ramp up the
+#   concurrency from 1 to the value provided with the --concurrency param
+#
 # server::
 #   Set the puppet master hostname or IP address..
 #
@@ -146,6 +150,7 @@ $cmdargs = [
   [ "--key",      "-k", GetoptLong::REQUIRED_ARGUMENT ],
   [ "--timeout",  "-t", GetoptLong::REQUIRED_ARGUMENT ],
   [ "--server",   "-s", GetoptLong::REQUIRED_ARGUMENT ],
+  [ "--sleep",    "-S", GetoptLong::NO_ARGUMENT       ],
   [ "--debug",    "-d", GetoptLong::NO_ARGUMENT       ],
   [ "--help",     "-h", GetoptLong::NO_ARGUMENT       ],
   [ "--verbose",  "-v", GetoptLong::NO_ARGUMENT       ],
@@ -209,6 +214,8 @@ begin
       $options[:cert] = arg
     when "--key"
       $options[:key] = arg
+    when "--sleep"
+      $options[:sleep] = arg
     end
   }
 rescue GetoptLong::InvalidOption => detail
@@ -259,7 +266,8 @@ class RequestPool
 
     # initial spawn
     (1..concurrency).each do |i|
-      spawn
+      EventMachine.add_timer($options[:sleep]) {spawn}
+      Puppet.debug("Thread started successfully")
     end
 
   end
