@@ -150,7 +150,7 @@ $cmdargs = [
   [ "--key",      "-k", GetoptLong::REQUIRED_ARGUMENT ],
   [ "--timeout",  "-t", GetoptLong::REQUIRED_ARGUMENT ],
   [ "--server",   "-s", GetoptLong::REQUIRED_ARGUMENT ],
-  [ "--sleep",    "-S", GetoptLong::NO_ARGUMENT       ],
+  [ "--sleep",    "-S", GetoptLong::OPTIONAL_ARGUMENT       ],
   [ "--debug",    "-d", GetoptLong::NO_ARGUMENT       ],
   [ "--help",     "-h", GetoptLong::NO_ARGUMENT       ],
   [ "--verbose",  "-v", GetoptLong::NO_ARGUMENT       ],
